@@ -7,6 +7,13 @@ I'm gonna come back to this and implement left analog stick support in the futur
 Feel free to recommend balance changes if you want.
 Original ReadMe follows.
 
+# Vita Compilation
+
+Please run the following to compile:
+
+	cmake -S . -B build   -DCMAKE_TOOLCHAIN_FILE="$VITASDK/share/vita.toolchain.cmake"   -DCMAKE_BUILD_TYPE=Release
+
+
 # PONG
 
 This is a recreation of the classic pong video game. Implemented in the C
