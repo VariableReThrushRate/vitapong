@@ -574,17 +574,18 @@ int main (int argc, char *args[]) {
 		
 			quit = 1;
 		}
-		
-		if (pad.buttons & SCE_CTRL_DOWN) {
+		if ((pad.buttons & SCE_CTRL_LEFT) || (pad.buttons & SCE_CTRL_RIGHT)) {
 			
-			move_paddle(0);
-		}
+			if (pad.buttons & SCE_CTRL_DOWN) {
+				
+				move_paddle(-1.0f);
+			}
 
-		if (pad.buttons & SCE_CTRL_UP) {
-			
-			move_paddle(1);
+			if (pad.buttons & SCE_CTRL_UP) {
+				
+				move_paddle(1.0f);
+			}
 		}
-		
 		//draw background
 		SDL_RenderClear(renderer);
 		SDL_FillRect(screen, NULL, 0x000000ff);
@@ -701,7 +702,8 @@ int init(int width, int height, int argc) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
 		sceClibPrintf("fail 703\n");
-		sceClibPrintf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		sceClibPrintf("SDL could not initialize! SDL_Error: ");
+		sceClibPrintf(SDL_GetError());
 		
 		return 1;
 	} 
