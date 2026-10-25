@@ -53,12 +53,13 @@ SDL_Texture *screen_texture;
 //inisilise starting position and sizes of game elemements
 static void init_game() {
 	
+	
 	ball.x = screen->w / 2;
 	ball.y = screen->h / 2;
 	ball.w = 10;
 	ball.h = 10;
 	ball.dy = 1;
-	ball.dx = 1;
+	ball.dx = 2;
 	
 	paddle[0].x = 20;
 	paddle[0].y = screen->h / 2 - 50 ;
@@ -330,24 +331,25 @@ static void move_paddle_ai() {
 		}	 		
 	}
 }
-
-static void move_paddle(int d) {
-
-	// if the down arrow is pressed move paddle down
-	if (d == 0) {
+// D now expects 0 to be a positive or negative float. It will multiply that against the max speed. I should probably add a clamp before I break something.
+static void move_paddle(float d) {
+	// if the down arrow is pressed move paddle down or if the Vita's analog stick moves a bit
+	static float max_speed = 5.0f;
+	if (d < 0) {
 		
 		if(paddle[1].y >= screen->h - paddle[1].h) {
 		
 			paddle[1].y = screen->h - paddle[1].h;
 		
 		} else { 
-		
-			paddle[1].y += 5;
+			
+			paddle[1].y += (int)(d * max_speed);
+			// paddle[1].y += 5;
 		}
 	}
 	
 	// if the up arrow is pressed move paddle up
-	if (d == 1) {
+	if (d > 0){
 
 		if(paddle[1].y <= 0) {
 		
@@ -355,7 +357,7 @@ static void move_paddle(int d) {
 
 		} else {
 		
-			paddle[1].y -= 5;
+			paddle[1].y -= (int)(d * max_speed);
 		}
 	}
 }
