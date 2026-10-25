@@ -590,15 +590,30 @@ int main (int argc, char *args[]) {
 			quit = 1;
 		}
 		
-		if (pad.buttons & SCE_CTRL_DOWN) {
+		if ((pad.buttons & SCE_CTRL_LEFT) || (pad.buttons & SCE_CTRL_RIGHT)) {
 			
-			move_paddle(0);
-		}
+			if (pad.buttons & SCE_CTRL_DOWN) {
+				
+				move_paddle(-1.0f);
+			}
 
-		if (pad.buttons & SCE_CTRL_UP) {
-			
-			move_paddle(1);
+			if (pad.buttons & SCE_CTRL_UP) {
+				
+				move_paddle(1.0f);
+			}
 		}
+		else if (pad.buttons & (pad.ly < 128)) {
+			
+			move_paddle(-1.0f);
+		}
+		else if (pad.buttons & (pad.ly > 128)) {
+			
+			move_paddle(1.0f);
+		}
+		{
+			/* code */
+		}
+		
 		
 		//draw background
 		SDL_RenderClear(renderer);
