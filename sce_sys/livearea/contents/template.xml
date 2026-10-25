@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <livearea style="a1" format-ver="01.00" content-rev="1">
   <livearea-background>
-    <image>bg0.png</image>
-  </livearea-background>
-  <gate>
-    <startup-image>startup.png</startup-image>
-  </gate>
-  <frame id="frame1" multi="o" autoflip="0" rev="1">
-    <liveitem default="on">
-      <image align="center" valign="center" origin="frame" width="260" height="168" x="0" y="0">frame1.png</image>
-      <target>psla:eboot</target>
-    </liveitem>
-  </frame>
-  <frame id="frame2" multi="o" autoflip="0" rev="1">
-    <liveitem default="on">
-      <image align="center" valign="center" origin="frame" width="260" height="168" x="0" y="0">frame2.png</image>
-    </liveitem>
-  </frame>
-  <frame id="frame3" multi="o" autoflip="0" rev="1">
-    <liveitem default="on">
-      <image align="center" valign="center" origin="frame" width="286" height="168" x="-1" y="225">frame3.png</image>
-      <target>https://example.com</target>
-    </liveitem>
-  </frame>
-</livearea>
+    <image>bg.png</image>
+    </livearea-background>
+
+    <gate>
+      <startup-image>startup.png</startup-image>
+      </gate>
+    </livearea>
