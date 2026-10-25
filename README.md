@@ -3,7 +3,6 @@
 This is a port of a recreation of the classic game of Pong for the PS Vita.
 I created this in a few days as a way to learn basic C syntax and maintaining my own GitHub repo.
 This was a neat  way to learn these concepts, and I look forward to future projects.
-I'm gonna come back to this and implement left analog stick support in the future.
 Feel free to recommend balance changes if you want.
 Original ReadMe follows.
 
@@ -12,6 +11,7 @@ Original ReadMe follows.
 Please run the following to compile:
 
 	cmake -S . -B build   -DCMAKE_TOOLCHAIN_FILE="$VITASDK/share/vita.toolchain.cmake"   -DCMAKE_BUILD_TYPE=Release
+	cmake --build build --parallel
 
 
 # PONG
@@ -34,9 +34,9 @@ I will take any feature requests like updating the AI or movement animation if t
 just clone the code and do it yourself. Enjoy!
 
 ## Controls
-* space bar to start a game
-* arrow keys for movement
-* ESC to exit game
+* START to start or restart a game
+* D-pad up/down or left analog stick Y-axis to move the paddle
+* SELECT to exit the game
 
 ## Images
 ![title screen](http://i.imgur.com/radat.png)

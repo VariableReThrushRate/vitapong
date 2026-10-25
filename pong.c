@@ -331,35 +331,26 @@ static void move_paddle_ai() {
 		}	 		
 	}
 }
-// D now expects 0 to be a positive or negative float. It will multiply that against the max speed. I should probably add a clamp before I break something.
-static void move_paddle(float d) {
-	// if the down arrow is pressed move paddle down or if the Vita's analog stick moves a bit
-	static float max_speed = 5.0f;
-	if (d < 0) {
-		
-		if(paddle[1].y >= screen->h - paddle[1].h) {
-		
-			paddle[1].y = screen->h - paddle[1].h;
-		
-		} else { 
-			
-			paddle[1].y += (int)(d * max_speed);
-			// paddle[1].y += 5;
-		}
-	}
-	
-	// if the up arrow is pressed move paddle up
-	if (d > 0){
+static void move_paddle(float direction) {
+	const float max_speed = 5.0f;
+	float movement = direction * max_speed;
+	int next_y;
 
-		if(paddle[1].y <= 0) {
-		
-			paddle[1].y = 0;
-
-		} else {
-		
-			paddle[1].y -= (int)(d * max_speed);
-		}
+	if (movement > 0.0f) {
+		movement += 0.5f;
+	} else if (movement < 0.0f) {
+		movement -= 0.5f;
 	}
+
+	next_y = paddle[1].y - (int)movement;
+
+	if (next_y < 0) {
+		next_y = 0;
+	} else if (next_y > screen->h - paddle[1].h) {
+		next_y = screen->h - paddle[1].h;
+	}
+
+	paddle[1].y = next_y;
 }
 
 static void draw_game_over(int p) { 
@@ -565,6 +556,9 @@ int main (int argc, char *args[]) {
 
 	SceCtrlData pad;
 	memset(&pad, 0, sizeof(pad));
+	if (sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG) < 0) {
+		sceClibPrintf("Could not enable analog controller input\n");
+	}
 	sceClibPrintf("pad init success\n");
 	SDL_GetWindowSize(window, &width, &height);
 	sceClibPrintf("Window init success\n");
@@ -590,29 +584,20 @@ int main (int argc, char *args[]) {
 			quit = 1;
 		}
 		
-		if ((pad.buttons & SCE_CTRL_LEFT) || (pad.buttons & SCE_CTRL_RIGHT)) {
-			
-			if (pad.buttons & SCE_CTRL_DOWN) {
-				
-				move_paddle(-1.0f);
+		float paddle_direction = 0.0f;
+		if (pad.buttons & (SCE_CTRL_UP | SCE_CTRL_DOWN)) {
+			if ((pad.buttons & SCE_CTRL_UP) && !(pad.buttons & SCE_CTRL_DOWN)) {
+				paddle_direction = 1.0f;
+			} else if ((pad.buttons & SCE_CTRL_DOWN) && !(pad.buttons & SCE_CTRL_UP)) {
+				paddle_direction = -1.0f;
 			}
-
-			if (pad.buttons & SCE_CTRL_UP) {
-				
-				move_paddle(1.0f);
+		} else {
+			int stick_y = (int)pad.ly - 128;
+			if (stick_y < -20 || stick_y > 20) {
+				paddle_direction = -(float)stick_y / 128.0f;
 			}
 		}
-		else if (pad.buttons & (pad.ly < 128)) {
-			
-			move_paddle(-1.0f);
-		}
-		else if (pad.buttons & (pad.ly > 128)) {
-			
-			move_paddle(1.0f);
-		}
-		{
-			/* code */
-		}
+		move_paddle(paddle_direction);
 		
 		
 		//draw background
