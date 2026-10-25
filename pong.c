@@ -437,14 +437,14 @@ static void draw_net() {
 	SDL_Rect net;
 	
 	net.x = screen->w / 2;
-	net.y = 20;
+	net.y = 0;
 	net.w = 5;
 	net.h = 15;
 
 	//draw the net
-	int i,r;
+	int r;
 
-	for(i = 0; i < 15; i++) {
+	for(; net.y < screen->h; net.y += 30) {
 		
 		r = SDL_FillRect(screen, &net, 0xffffffff);
 	
@@ -452,8 +452,6 @@ static void draw_net() {
 		
 			sceClibPrintf("fill rectangle faliled in func draw_net()\n");
 		}
-
-		net.y = net.y + 30;
 	}
 }
 
